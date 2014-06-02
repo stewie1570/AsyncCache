@@ -43,21 +43,21 @@ namespace Cache.Tests
         }
 
         [TestMethod]
-        public async Task ShouldAwaitDataSourceTaskTwiceSinceKeyExpired()
+        public async Task ShouldAwaitDataSourceTaskTwiceSinceKeyExpiredAndReturnTheSecondResult()
         {
             //Arrange
             var time = DateTime.Parse("01/01/2000 12:00 am");
             _cache = new Cache(() => time, TimeSpan.FromMinutes(1));
             int callCount = 0;
-            Func<Task<int>> func = () => { callCount++; return Task.FromResult(2); };
 
             //Act
-            await _cache.Get("some key", func);
+            await _cache.Get("some key", () => { callCount++; return Task.FromResult(2); });
             time = DateTime.Parse("01/01/2000 12:01 am");
-            await _cache.Get("some key", func);
+            var result = await _cache.Get("some key", () => { callCount++; return Task.FromResult(3); });
 
             //Assert
             callCount.Should().Be(2);
+            result.Should().Be(3);
         }
     }
 }
