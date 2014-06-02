@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,6 +8,7 @@ namespace Cache
     public class Cache
     {
         private Dictionary<string, CacheItem> _dictionary = new Dictionary<string, CacheItem>();
+        private ConcurrentDictionary<string, AsyncLock> _locks = new ConcurrentDictionary<string, AsyncLock>();
         private Func<DateTime> _timeProvider;
         private TimeSpan _keyLifeTime;
 
@@ -17,20 +19,22 @@ namespace Cache
             _keyLifeTime = keyLifeTime;
         }
 
-        //TODO: This is not thread-safe yet!!!
         public async Task<T> Get<T>(string key, Func<Task<T>> cacheDataSource)
         {
-            var currentTime = _timeProvider();
-
-            if (!_dictionary.ContainsKey(key) || currentTime >= _dictionary[key].Expiration)
+            using (var releaser = await _locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
             {
-                _dictionary[key] = new CacheItem
+                var currentTime = _timeProvider();
+
+                if (!_dictionary.ContainsKey(key) || currentTime >= _dictionary[key].Expiration)
                 {
-                    Item = await cacheDataSource(),
-                    Expiration = currentTime + _keyLifeTime
-                };
+                    _dictionary[key] = new CacheItem
+                    {
+                        Item = await cacheDataSource(),
+                        Expiration = currentTime + _keyLifeTime
+                    };
+                }
+                return (T)_dictionary[key].Item;
             }
-            return (T)_dictionary[key].Item;
         }
 
         #region Helper classes
