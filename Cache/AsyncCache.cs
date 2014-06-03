@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace Cache
 {
-    public class Cache
+    public class AsyncCache
     {
         private Dictionary<string, CacheItem> _dictionary = new Dictionary<string, CacheItem>();
         private ConcurrentDictionary<string, AsyncLock> _locks = new ConcurrentDictionary<string, AsyncLock>();
         private Func<DateTime> _timeProvider;
         private TimeSpan _keyLifeTime;
 
-        public Cache() : this(() => DateTime.UtcNow, TimeSpan.FromMinutes(5)) { }
-        public Cache(Func<DateTime> timeProvider, TimeSpan keyLifeTime)
+        public AsyncCache() : this(() => DateTime.UtcNow, TimeSpan.FromMinutes(5)) { }
+        public AsyncCache(Func<DateTime> timeProvider, TimeSpan keyLifeTime)
         {
             _timeProvider = timeProvider;
             _keyLifeTime = keyLifeTime;

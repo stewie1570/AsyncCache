@@ -7,14 +7,14 @@ using System.Collections.Generic;
 namespace Cache.Tests
 {
     [TestClass]
-    public class CacheTest
+    public class AsyncCacheTest
     {
-        private Cache _cache;
+        private AsyncCache _cache;
 
         [TestInitialize]
         public void Setup()
         {
-            _cache = new Cache();
+            _cache = new AsyncCache();
         }
 
         [TestMethod]
@@ -48,13 +48,28 @@ namespace Cache.Tests
         {
             //Arrange
             var time = DateTime.Parse("01/01/2000 12:00 am");
-            _cache = new Cache(() => time, TimeSpan.FromMinutes(1));
+            _cache = new AsyncCache(() => time, TimeSpan.FromMinutes(1));
             int callCount = 0;
 
             //Act
             await _cache.Get("some key", () => { callCount++; return Task.FromResult(2); });
             time = DateTime.Parse("01/01/2000 12:01 am");
             var result = await _cache.Get("some key", () => { callCount++; return Task.FromResult(3); });
+
+            //Assert
+            callCount.Should().Be(2);
+            result.Should().Be(3);
+        }
+
+        [TestMethod]
+        public async Task ShouldAwaitDataSourceTaskTwiceSinceThereAreTwoKeys()
+        {
+            //Arrange
+            int callCount = 0;
+
+            //Act
+            await _cache.Get("key 1", () => { callCount++; return Task.FromResult(2); });
+            var result = await _cache.Get("key 2", () => { callCount++; return Task.FromResult(3); });
 
             //Assert
             callCount.Should().Be(2);
