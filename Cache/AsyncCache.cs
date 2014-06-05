@@ -12,7 +12,8 @@ namespace Cache
         private Func<DateTime> _timeProvider;
         private TimeSpan _keyLifeTime;
 
-        public AsyncCache() : this(() => DateTime.UtcNow, TimeSpan.FromMinutes(5)) { }
+        public AsyncCache() : this(TimeSpan.FromMinutes(5)) { }
+        public AsyncCache(TimeSpan keyLifeTime) : this(() => DateTime.UtcNow, keyLifeTime) { }        
         public AsyncCache(Func<DateTime> timeProvider, TimeSpan keyLifeTime)
         {
             _timeProvider = timeProvider;
