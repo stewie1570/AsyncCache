@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>AsyncCache</id>
+        <version>1.0.0</version>
+        <authors>stewie1570</authors>
+        <licenseUrl>https://github.com/stewie1570/AsyncCache/blob/master/MIT.LICENSE</licenseUrl>
+        <projectUrl>https://github.com/stewie1570/AsyncCache</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Simple Async Cache implementation.</description>
+    </metadata>
+    <files>
+        <file src="lib\Cache.dll" target="lib\Cache.dll" />
+    </files>
+</package>
