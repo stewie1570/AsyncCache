@@ -2,6 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>AsyncCache</id>
+        <version>1.0.0</version>
         <authors>stewie1570</authors>
         <licenseUrl>https://github.com/stewie1570/AsyncCache/blob/master/MIT.LICENSE</licenseUrl>
         <projectUrl>https://github.com/stewie1570/AsyncCache</projectUrl>
