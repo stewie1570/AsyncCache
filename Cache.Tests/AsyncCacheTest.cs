@@ -1,8 +1,7 @@
-﻿using System;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Threading.Tasks;
-using FluentAssertions;
-using System.Collections.Generic;
 
 namespace Cache.Tests
 {
