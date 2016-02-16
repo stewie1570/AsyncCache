@@ -20,7 +20,7 @@ namespace Cache
             _keyLifeTime = keyLifeTime;
         }
 
-        public async Task<T> Get<T>(string key, Func<Task<T>> cacheDataSource)
+        public async Task<T> Get<T>(string key, Func<Task<T>> dataSource)
         {
             using (var releaser = await _locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
             {
@@ -30,7 +30,7 @@ namespace Cache
                 {
                     _dictionary[key] = new CacheItem
                     {
-                        Item = await cacheDataSource(),
+                        Item = await dataSource(),
                         Expiration = currentTime + _keyLifeTime
                     };
                 }
