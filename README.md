@@ -1,9 +1,43 @@
-#AsyncCache
+# AsyncCache
 [![Build](http://thinkquickbuild.cloudapp.net:8080/app/rest/builds/buildType:AsyncCache_Build/statusIcon)]
 (http://thinkquickbuild.cloudapp.net:8080/project.html?projectId=AsyncCache&tab=projectOverview)
 [![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://badge.fury.io/nu/AsyncCache)
 
-Just a simple async cache implementation. Here is example usage from a unit test (below). Did I mention how simple it is?
+Just a simple async cache implementation.
+
+## Usage
+**Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example to illustrate usage of AsyncCache. 
+
+        using Cache;
+        using System;
+        using System.Threading.Tasks;
+        
+        namespace ConsoleApplication1
+        {
+            class Program
+            {
+                static void Main(string[] args)
+                {
+                    var random = new Random();
+                    var cache = new AsyncCache();
+        
+                    Console.WriteLine("Not Cached:");
+                    for (var i = 0; i < 5; i++)
+                        Console.WriteLine(random.Next(0, 5));
+        
+                    Console.WriteLine("\nCached:");
+                    for (var i = 0; i < 5; i++)
+                        Console.WriteLine(cache.Get(
+                            key: "random integer",
+                            dataSource: () => Task.FromResult(random.Next(0, 5))).Result);
+        
+                    Console.ReadKey();
+                }
+            }
+        }
+
+
+Here is example usage from a unit test (below). Did I mention how simple it is?
 
         [TestInitialize]
         public void Setup()
