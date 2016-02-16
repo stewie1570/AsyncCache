@@ -37,7 +37,7 @@ Just a simple async cache implementation.
         }
 
 
-Here is example usage from a unit test (below). Did I mention how simple it is?
+Here is example usage from unit tests (below). Did I mention how simple it is?
 
         [TestInitialize]
         public void Setup()
