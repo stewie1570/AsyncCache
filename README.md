@@ -3,7 +3,7 @@
 (http://thinkquickbuild.cloudapp.net:8080/project.html?projectId=AsyncCache&tab=projectOverview)
 [![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://badge.fury.io/nu/AsyncCache)
 
-Just a simple async cache implementation.
+Async cache using an "async lock" (a semaphore) to prevent competing/simultaneous calls to the data source.
 
 ## Usage
 **Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example to illustrate usage of AsyncCache. 
