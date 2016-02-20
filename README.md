@@ -3,10 +3,14 @@
 (http://thinkquickbuild.cloudapp.net:8080/project.html?projectId=AsyncCache&tab=projectOverview)
 [![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://badge.fury.io/nu/AsyncCache)
 
-Async cache using an "async lock" (a semaphore) to prevent competing/simultaneous calls to the data source.
+Async cache uses an "async lock" (a semaphore) to prevent competing/simultaneous calls to the data source.
 
 ## Usage
-**Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example to illustrate usage of AsyncCache. 
+AsyncCache is not a singleton. If you want your cached key/values to be scoped as a singleton (also just generally speaking), I recommend using a dependency injector to instantiate AsyncCache.
+
+The reason the cached key/values are scoped to the instance of AsyncCache is this way you can control the both the TimeSpan and scope of your key/values.
+
+**Usage Example Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example app to illustrate usage of AsyncCache. This example app is synchronous..so maybe a bad example but it should still illistrate the usage ok.
 
         using Cache;
         using System;
