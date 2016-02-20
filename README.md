@@ -40,6 +40,21 @@ The reason the cached key/values are scoped to the instance of AsyncCache is thi
             }
         }
 
+**Example App Output:**
+
+        Not Cached:
+        4
+        2
+        2
+        4
+        0
+        
+        Cached:
+        2
+        2
+        2
+        2
+        2
 
 Here is example usage from unit tests (below). Did I mention how simple it is?
 
