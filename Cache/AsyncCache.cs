@@ -7,40 +7,45 @@ namespace Cache
 {
     public class AsyncCache
     {
-        private Dictionary<string, CacheItem> _dictionary = new Dictionary<string, CacheItem>();
-        private ConcurrentDictionary<string, AsyncLock> _locks = new ConcurrentDictionary<string, AsyncLock>();
-        private Func<DateTime> _timeProvider;
-        private TimeSpan _keyLifeTime;
+		private Dictionary<string, CacheItem> dictionary = new Dictionary<string, CacheItem>();
+		private ConcurrentDictionary<string, AsyncLock> locks = new ConcurrentDictionary<string, AsyncLock>();
+		private Func<DateTime> timeProvider;
+		private TimeSpan keyLifeTime;
 
         public AsyncCache() : this(TimeSpan.FromMinutes(5)) { }
         public AsyncCache(TimeSpan keyLifeTime) : this(() => DateTime.UtcNow, keyLifeTime) { }        
         public AsyncCache(Func<DateTime> timeProvider, TimeSpan keyLifeTime)
         {
-            _timeProvider = timeProvider;
-            _keyLifeTime = keyLifeTime;
+            this.timeProvider = timeProvider;
+            this.keyLifeTime = keyLifeTime;
         }
 
         public async Task<T> Get<T>(string key, Func<Task<T>> dataSource)
         {
-            using (var releaser = await _locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
+            using (var releaser = await locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
             {
-                var currentTime = _timeProvider();
+                var currentTime = timeProvider();
 
-                if (!_dictionary.ContainsKey(key) || currentTime >= _dictionary[key].Expiration)
+                if (!dictionary.ContainsKey(key) || currentTime >= dictionary[key].Expiration)
                 {
-                    _dictionary[key] = new CacheItem
+                    dictionary[key] = new CacheItem
                     {
                         Item = await dataSource(),
-                        Expiration = currentTime + _keyLifeTime
+                        Expiration = currentTime + keyLifeTime
                     };
                 }
-                return (T)_dictionary[key].Item;
+                return (T)dictionary[key].Item;
             }
         }
 
-        #region Helper classes
+		public void Clear(string key)
+		{
+			dictionary.Remove(key);
+		}
 
-        public class CacheItem
+		#region Helper classes
+
+		public class CacheItem
         {
             public object Item { get; set; }
             public DateTime Expiration { get; set; }

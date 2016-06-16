@@ -8,12 +8,12 @@ namespace Cache.Tests
 	[TestFixture]
 	public class AsyncCacheTest
 	{
-		private AsyncCache _cache;
+		private AsyncCache cache;
 
 		[SetUp]
 		public void Setup()
 		{
-			_cache = new AsyncCache();
+			cache = new AsyncCache();
 		}
 
 		[Test]
@@ -21,7 +21,7 @@ namespace Cache.Tests
 		{
 			//Arrange
 			//Act
-			int result = await _cache.Get(key: "some key", dataSource: () => Task.FromResult(2));
+			int result = await cache.Get(key: "some key", dataSource: () => Task.FromResult(2));
 
 			//Assert
 			result.Should().Be(2);
@@ -34,8 +34,40 @@ namespace Cache.Tests
 			int callCount = 0;
 
 			//Act
-			await _cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
-			var result = await _cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
+			await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
+			var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
+
+			//Assert
+			callCount.Should().Be(1);
+			result.Should().Be(2);
+		}
+
+		[Test]
+		public async Task ShouldAwaitDataSourceTaskTwiceSinceCacheKeyWasCleared()
+		{
+			//Arrange
+			int callCount = 0;
+
+			//Act
+			await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
+			cache.Clear(key: "some key");
+			var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
+
+			//Assert
+			callCount.Should().Be(2);
+			result.Should().Be(3);
+		}
+
+		[Test]
+		public async Task ClearShouldOnlyClearSpecifiedKey()
+		{
+			//Arrange
+			int callCount = 0;
+
+			//Act
+			await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
+			cache.Clear(key: "some other key");
+			var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
 
 			//Assert
 			callCount.Should().Be(1);
@@ -47,13 +79,13 @@ namespace Cache.Tests
 		{
 			//Arrange
 			var time = DateTime.Parse("01/01/2000 12:00 am");
-			_cache = new AsyncCache(() => time, TimeSpan.FromMinutes(1));
+			cache = new AsyncCache(() => time, TimeSpan.FromMinutes(1));
 			int callCount = 0;
 
 			//Act
-			await _cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
+			await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
 			time = DateTime.Parse("01/01/2000 12:01 am");
-			var result = await _cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
+			var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
 
 			//Assert
 			callCount.Should().Be(2);
@@ -67,8 +99,8 @@ namespace Cache.Tests
 			int callCount = 0;
 
 			//Act
-			await _cache.Get(key: "key 1", dataSource: () => { callCount++; return Task.FromResult(2); });
-			var result = await _cache.Get(key: "key 2", dataSource: () => { callCount++; return Task.FromResult(3); });
+			await cache.Get(key: "key 1", dataSource: () => { callCount++; return Task.FromResult(2); });
+			var result = await cache.Get(key: "key 2", dataSource: () => { callCount++; return Task.FromResult(3); });
 
 			//Assert
 			callCount.Should().Be(2);
@@ -83,8 +115,8 @@ namespace Cache.Tests
 
 			int? result1 = null;
 			int? result2 = null;
-			var get1 = _cache.Get(key: "key1", dataSource: () => tcs1.Task).ContinueWith(t => result1 = t.Result);
-			var get2 = _cache.Get(key: "key1", dataSource: () => tcs2.Task).ContinueWith(t => result2 = t.Result);
+			var get1 = cache.Get(key: "key1", dataSource: () => tcs1.Task).ContinueWith(t => result1 = t.Result);
+			var get2 = cache.Get(key: "key1", dataSource: () => tcs2.Task).ContinueWith(t => result2 = t.Result);
 
 			tcs1.SetResult(1);
 			tcs2.SetResult(2);
