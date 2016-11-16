@@ -1,6 +1,6 @@
 # AsyncCache
-[![Build](http://thinkquickbuild.cloudapp.net:8080/app/rest/builds/buildType:AsyncCache_Build/statusIcon.svg)]
-(http://thinkquickbuild.cloudapp.net:8080/project.html?projectId=AsyncCache&tab=projectOverview)
+[![Build](http://stewiebuild.cloudapp.net:8080/app/rest/builds/buildType:AsyncCache_Build/statusIcon.svg)]
+(http://stewiebuild.cloudapp.net:8080/project.html?projectId=AsyncCache&tab=projectOverview)
 [![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://badge.fury.io/nu/AsyncCache)
 
 Async cache uses an "async lock" (a semaphore) to prevent competing/simultaneous calls to the data source.
