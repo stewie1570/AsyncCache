@@ -7,13 +7,13 @@ namespace Cache
 {
     public class AsyncCache
     {
-		private Dictionary<string, CacheItem> dictionary = new Dictionary<string, CacheItem>();
-		private ConcurrentDictionary<string, AsyncLock> locks = new ConcurrentDictionary<string, AsyncLock>();
-		private Func<DateTime> timeProvider;
-		private TimeSpan keyLifeTime;
+        private Dictionary<string, CacheItem> dictionary = new Dictionary<string, CacheItem>();
+        private ConcurrentDictionary<string, AsyncLock> locks = new ConcurrentDictionary<string, AsyncLock>();
+        private Func<DateTime> timeProvider;
+        private TimeSpan keyLifeTime;
 
         public AsyncCache() : this(TimeSpan.FromMinutes(5)) { }
-        public AsyncCache(TimeSpan keyLifeTime) : this(() => DateTime.UtcNow, keyLifeTime) { }        
+        public AsyncCache(TimeSpan keyLifeTime) : this(() => DateTime.UtcNow, keyLifeTime) { }
         public AsyncCache(Func<DateTime> timeProvider, TimeSpan keyLifeTime)
         {
             this.timeProvider = timeProvider;
@@ -38,14 +38,14 @@ namespace Cache
             }
         }
 
-		public void Clear(string key)
-		{
-			dictionary.Remove(key);
-		}
+        public void Clear(string key)
+        {
+            dictionary.Remove(key);
+        }
 
-		#region Helper classes
+        #region Helper classes
 
-		public class CacheItem
+        public class CacheItem
         {
             public object Item { get; set; }
             public DateTime Expiration { get; set; }
