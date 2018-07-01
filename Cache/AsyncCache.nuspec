@@ -4,7 +4,7 @@
         <id>AsyncCache</id>
         <version>1.0.1</version>
         <authors>stewie1570</authors>
-        <licenseUrl>https://github.com/stewie1570/AsyncCache/blob/master/MIT.LICENSE</licenseUrl>
+        <licenseUrl>https://github.com/stewie1570/AsyncCache/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/stewie1570/AsyncCache</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Simple Async Cache implementation.</description>
