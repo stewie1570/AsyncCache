@@ -29,6 +29,7 @@ jobs:
     - name: Publish NuGet
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
+        PACKAGE_NAME: AsyncCache
         PROJECT_FILE_PATH: Cache/Cache.csproj
         VERSION_STATIC: ${{ steps.tag_version.outputs.new_version }}
         NUGET_KEY: ${{secrets.NUGET_API_KEY}}
