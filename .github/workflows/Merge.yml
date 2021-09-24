@@ -29,5 +29,5 @@ jobs:
     - name: Publish NuGet
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
-        # Filepath of the project to be packaged, relative to root of repository
         PROJECT_FILE_PATH: Cache/Cache.csproj
+        VERSION_STATIC: ${{ steps.vars.outputs.tag }}
