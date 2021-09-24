@@ -26,11 +26,8 @@ jobs:
       uses: mathieudutour/github-tag-action@v5.6
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Test
-      run: |
-        echo ${{ steps.tag_version.outputs.new_version }}
-    # - name: Publish NuGet
-    #  uses: brandedoutcast/publish-nuget@v2.5.5
-    #  with:
-    #    PROJECT_FILE_PATH: Cache/Cache.csproj
-    #    VERSION_STATIC: ${{ steps.vars.outputs.tag }}
+    - name: Publish NuGet
+      uses: brandedoutcast/publish-nuget@v2.5.5
+      with:
+        PROJECT_FILE_PATH: Cache/Cache.csproj
+        VERSION_STATIC: ${{ steps.tag_version.outputs.new_version }}
