@@ -30,4 +30,5 @@ jobs:
       run: |  
         cd Cache
         dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
-        dotnet nuget push out/*.nupkg --skip-duplicate --no-symbols true      
+        cd out
+        dotnet nuget push AsyncCache.${{ steps.tag_version.outputs.new_version }}.nupkg --skip-duplicate --no-symbols true      
