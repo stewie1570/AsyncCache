@@ -27,7 +27,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Publish NuGet
-      if: startsWith(github.ref, 'refs/tags/')
       uses: brandedoutcast/publish-nuget@v2.5.5
       with:
         # Filepath of the project to be packaged, relative to root of repository
