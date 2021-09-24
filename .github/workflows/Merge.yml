@@ -26,11 +26,8 @@ jobs:
       uses: mathieudutour/github-tag-action@v5.6
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Publish NuGet
-      uses: brandedoutcast/publish-nuget@v2.5.5
-      with:
-        PACKAGE_NAME: AsyncCache
-        PROJECT_FILE_PATH: Cache/Cache.csproj
-        VERSION_STATIC: ${{ steps.tag_version.outputs.new_version }}
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-        TAG_COMMIT: false
+    - name: Create NuGet Package
+      run: |  
+        cd .\Cache\
+        dotnet pack -c Release -o out -v -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}  
+          
