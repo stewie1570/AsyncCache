@@ -31,4 +31,7 @@ jobs:
         cd Cache
         dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
         cd out
-        dotnet nuget push AsyncCache.${{ steps.tag_version.outputs.new_version }}.nupkg --skip-duplicate --no-symbols true      
+        dotnet nuget push AsyncCache.${{ steps.tag_version.outputs.new_version }}.nupkg -k ${NUGET_API_KEY}
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        
