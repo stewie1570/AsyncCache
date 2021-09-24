@@ -28,7 +28,7 @@ jobs:
         github_token: ${{ secrets.GITHUB_TOKEN }}
     - name: Build NuGet package
       run: |  
-        cd <project>
+        cd Cache
         dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
     # - name: Push NuGet Package
     #  run: dotnet nuget push ./Cache/out/*.nupkg --skip-duplicate --no-symbols true
