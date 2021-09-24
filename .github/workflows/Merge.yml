@@ -26,4 +26,10 @@ jobs:
       uses: mathieudutour/github-tag-action@v5.6
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-    # ${{ steps.tag_version.outputs.new_version }}         
+    - name: Build NuGet package
+      run: |  
+        cd <project>
+        dotnet pack -c Release -o out -p:PackageVersion=${{ steps.tag_version.outputs.new_version }}
+    # - name: Push NuGet Package
+    #  run: dotnet nuget push ./Cache/out/*.nupkg --skip-duplicate --no-symbols true
+      
