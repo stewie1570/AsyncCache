@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>AsyncCache</PackageId>
+    <Version>1.0.39</Version>
+    <Authors>Stewart Anderson</Authors>
   </PropertyGroup>
-
-  <PackageId>AsyncCache</PackageId>
-  <Version>1.0.39</Version>
-  <Authors>Stewart Anderson</Authors>
 
 </Project>
