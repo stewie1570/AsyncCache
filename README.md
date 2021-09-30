@@ -10,7 +10,7 @@ AsyncCache is not a singleton. If you want your cached key/values to be scoped a
 
 The reason the cached key/values are scoped to the instance of AsyncCache is this way you can control both the TimeSpan and the scope of your key/values.
 
-**Usage Example Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example app to illustrate usage of AsyncCache. This example app is synchronous..so maybe a bad example but it should still illistrate the usage ok.
+**Usage Example Note**: Don't use *.Result* from a task. Async functions should be called by async functions. This is just an example app to illustrate usage of AsyncCache. This example app is synchronous..so maybe a bad example but it should still illistrate the usage.
 
 ```csharp
 using Cache;
