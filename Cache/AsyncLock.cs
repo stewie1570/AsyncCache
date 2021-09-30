@@ -18,11 +18,11 @@ namespace Cache
         {
             var wait = _semaphore.WaitAsync();
             return wait.IsCompleted ? _releaser :
-                        wait.ContinueWith((t, o) => (IDisposable)o,
-                        _releaser.Result,
-                        CancellationToken.None,
-                        TaskContinuationOptions.ExecuteSynchronously,
-                        TaskScheduler.Default);
+                wait.ContinueWith((t, o) => (IDisposable)o,
+                _releaser.Result,
+                CancellationToken.None,
+                TaskContinuationOptions.ExecuteSynchronously,
+                TaskScheduler.Default);
         }
 
         private sealed class Releaser : IDisposable
