@@ -1,5 +1,7 @@
 # AsyncCache
-[![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://badge.fury.io/nu/AsyncCache)
+[![NuGet version](https://badge.fury.io/nu/AsyncCache.svg)](https://www.nuget.org/packages/AsyncCache/)
+[![Build](https://github.com/stewie1570/AsyncCache/actions/workflows/Merge.yml/badge.svg)](https://github.com/stewie1570/AsyncCache/actions/workflows/Merge.yml)
+[![Build](https://github.com/stewie1570/AsyncCache/actions/workflows/PR.yml/badge.svg)](https://github.com/stewie1570/AsyncCache/actions/workflows/PR.yml)
 
 Async cache uses an "async lock" (a semaphore) to prevent competing/simultaneous calls to the data source.
 
