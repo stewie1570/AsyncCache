@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageId>AsyncCache</PackageId>
     <Authors>Stewart Anderson</Authors>
     <Description>A simple async cache implementation</Description>

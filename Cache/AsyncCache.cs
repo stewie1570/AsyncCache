@@ -22,6 +22,12 @@ namespace Cache
 
         public async Task<T> Get<T>(string key, Func<Task<T>> dataSource)
         {
+            dictionary.TryGetValue(key, out var cacheItem);
+            if (cacheItem != null && timeProvider() < cacheItem.Expiration)
+            {
+                return (T)cacheItem.Item;
+            }
+
             using (var releaser = await locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
             {
                 var currentTime = timeProvider();
@@ -38,9 +44,12 @@ namespace Cache
             }
         }
 
-        public void Clear(string key)
+        public async Task Clear(string key)
         {
-            dictionary.Remove(key);
+            using (var releaser = await locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
+            {
+                dictionary.Remove(key);
+            }
         }
 
         #region Helper classes
