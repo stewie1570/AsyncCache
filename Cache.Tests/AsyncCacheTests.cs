@@ -26,6 +26,19 @@ namespace Cache.Tests
         }
 
         [Fact]
+        public async Task ClearShouldNotThrowWhenAlreadyCleared()
+        {
+            //Arrange
+            //Act
+            int result = await cache.Get(key: "some key", dataSource: () => Task.FromResult(2));
+            await cache.Clear(key: "some key");
+            await cache.Clear(key: "some key");
+
+            //Assert
+            result.Should().Be(2);
+        }
+
+        [Fact]
         public async Task ShouldAwaitDataSourceTaskOnceAndReturnTheFirstDataSourceResult()
         {
             //Arrange
@@ -48,7 +61,7 @@ namespace Cache.Tests
 
             //Act
             await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
-            cache.Clear(key: "some key");
+            await cache.Clear(key: "some key");
             var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
 
             //Assert
@@ -64,7 +77,7 @@ namespace Cache.Tests
 
             //Act
             await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(2); });
-            cache.Clear(key: "some other key");
+            await cache.Clear(key: "some other key");
             var result = await cache.Get(key: "some key", dataSource: () => { callCount++; return Task.FromResult(3); });
 
             //Assert
