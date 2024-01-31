@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Cache
 {
     public class AsyncCache
     {
-        private Dictionary<string, CacheItem> dictionary = new Dictionary<string, CacheItem>();
+        private ConcurrentDictionary<string, CacheItem> dictionary = new ConcurrentDictionary<string, CacheItem>();
         private ConcurrentDictionary<string, AsyncLock> locks = new ConcurrentDictionary<string, AsyncLock>();
         private Func<DateTime> timeProvider;
         private TimeSpan keyLifeTime;
@@ -48,7 +47,7 @@ namespace Cache
         {
             using (var releaser = await locks.GetOrAdd(key, s => new AsyncLock()).LockAsync())
             {
-                dictionary.Remove(key);
+                dictionary.TryRemove(key, out _);
             }
         }
 
